@@ -1,0 +1,14 @@
+{% for a in artist %}
+<h2>{{ a.artist_name }}</h2>
+<div>
+  <p>Genre: {{ a.genre }}</p>
+  <p>Established: {{ a.year_est }}</p>
+</div>
+{% endfor %}
+
+<h3>Songs:</h3>
+<ul>
+  {% for song in song_list %}
+  <li>{{ song.song_name }}</li>
+  {% endfor %}
+</ul>
