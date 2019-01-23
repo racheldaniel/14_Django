@@ -1,23 +1,43 @@
 <h2>{{ artist.artist_name }}</h2>
 <div>
-  <p>Established: {{ artist.year_est }}</p>
+  <p>Established {{ artist.year_est }}</p>
 </div>
 
-<h3>Songs:</h3>
-<ul>
-  {% for song in song_list %}
-  <li>{{ song.song_name }}</li>
-  {% endfor %}
-</ul>
+<h3>Albums:</h3>
+{% for album in artist.album_set.all %}
+    <h5>{{ album.album_name }}</h5>
+    <ul>
+    {% for song in album.song_set.all %}
+        <li>{{ song.song_name }}</li>
+    {% endfor %}
+    </ul>
+{% endfor %}
+
 <form action="{% url 'history:add_song' artist.id %}" method="POST">
-        {% csrf_token %}
-        <h2>Add a Song</h2>
-        <label for="song_name">Title:</label>
-        <input type="text" name="song_name" id="song_name">
-        <select name="album">
-              {% for album in artist.album_set.all %}
-                  <option value="{{album.id}}" id="album{{ forloop.counter }}">{{album.album_name}}</option>
-              {% endfor %}
-        </select>
-        <input type="submit" value="Add Song">
+  {% csrf_token %}
+  <h2>Add a Song</h2>
+  <label for="song_name">Title:</label>
+  <input type="text" name="song_name" id="song_name" />
+  <select name="album">
+    {% for album in artist.album_set.all %}
+        <option value="{{ album.id }}" id="album{{ forloop.counter }}">{{album.album_name}}</option>
+    {% endfor %}
+  </select>
+  <input type="submit" value="Add Song" />
 </form>
+
+<form action="{% url 'history:add_album' artist.id %}" method="POST">
+    {% csrf_token %}
+    <h2>Add an Album</h2>
+    <label for="album_name">Title:</label>
+    <input type="text" name="album_name" id="album_name" />
+    <label for="release_date">Release Date:</label>
+    <input type="text" name="release_date" id="release_date" />
+    <select name="genre">
+        {% for genre in genre_list %}
+            <option value="{{ genre.id }}" id="genre{{ forloop.counter }}">{{genre.genre_name}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Add Album" />
+</form>
+
