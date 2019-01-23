@@ -1,10 +1,7 @@
-{% for a in artist %}
-<h2>{{ a.artist_name }}</h2>
+<h2>{{ artist.artist_name }}</h2>
 <div>
-  <p>Genre: {{ a.genre }}</p>
-  <p>Established: {{ a.year_est }}</p>
+  <p>Established: {{ artist.year_est }}</p>
 </div>
-{% endfor %}
 
 <h3>Songs:</h3>
 <ul>
@@ -12,3 +9,15 @@
   <li>{{ song.song_name }}</li>
   {% endfor %}
 </ul>
+<form action="{% url 'history:add_song' artist.id %}" method="POST">
+        {% csrf_token %}
+        <h2>Add a Song</h2>
+        <label for="song_name">Title:</label>
+        <input type="text" name="song_name" id="song_name">
+        <select name="album">
+              {% for album in artist.album_set.all %}
+                  <option value="{{album.id}}" id="album{{ forloop.counter }}">{{album.album_name}}</option>
+              {% endfor %}
+        </select>
+        <input type="submit" value="Add Song">
+</form>
